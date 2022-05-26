@@ -17,10 +17,10 @@ export async function sendMessage(email, status = 0) {
 export function subscribe(onMessage = (_message) => {}) {
   const resp = client 
   .from('messages')
-  .on('INSERT', payload => {
-    console.log('Change received', payload)
+  .on('*', (payload) => {
+    onMessage(payload.new);
   })
-  .subscribe(onMessage);
+  .subscribe();
   return parseData(resp);
   // TODO: Subscribe to changes for the `messages` table
   // and call `onMessage` with the newly added row
